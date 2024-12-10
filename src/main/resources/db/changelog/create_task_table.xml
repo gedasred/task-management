@@ -1,0 +1,28 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="create-task-table" author="admin">
+
+    <createTable tableName="tasks">
+      <column name="id" type="BIGINT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="title" type="VARCHAR(255)">
+        <constraints nullable="false" />
+      </column>
+      <column name="description" type="TEXT"/>
+      <column name="status" type="VARCHAR(50)"/>
+      <column name="user_id" type="BIGINT"/>
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="tasks"
+                             baseColumnNames="user_id"
+                             constraintName="fk_tasks_users"
+                             referencedTableName="users"
+                             referencedColumnNames="id"/>
+  </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db/changelog/create_user_table.xml
+  - include:
+      file: classpath:db/changelog/create_task_table.xml
