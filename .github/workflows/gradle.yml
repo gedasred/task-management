@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: CI
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:17  # Use the desired PostgreSQL version
+        image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -37,7 +37,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
 
       - name: Wait for PostgreSQL to be ready
         run: |
@@ -74,4 +74,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582
