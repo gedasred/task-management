@@ -9,6 +9,6 @@ $do$
     END
 $do$;
 
-CREATE USER "userEntity" WITH ENCRYPTED PASSWORD 'password';
-CREATE DATABASE "task-management" OWNER "userEntity";
-CREATE DATABASE "task-management-test" OWNER "userEntity";
+CREATE USER "user" WITH ENCRYPTED PASSWORD 'password';
+CREATE DATABASE "task-management" OWNER "user";
+CREATE DATABASE "task-management-test" OWNER "user";
