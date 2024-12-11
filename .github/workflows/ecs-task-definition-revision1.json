@@ -38,12 +38,7 @@
     "executionRoleArn": "arn:aws:iam::340752827921:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "volumes": [],
-    "status": "ACTIVE",
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2",
-        "FARGATE"
-    ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
