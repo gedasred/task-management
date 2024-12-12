@@ -39,6 +39,10 @@
                 {
                     "name": "SECURITY_PASSWORD",
                     "valueFrom": "arn:aws:ssm:eu-north-1:340752827921:parameter/securitypassword"
+                },
+                {
+                    "name": "DATASOURCE_URL",
+                    "valueFrom": "arn:aws:ssm:eu-north-1:340752827921:parameter/datasourceurl"
                 }
             ],
             "ulimits": [],
