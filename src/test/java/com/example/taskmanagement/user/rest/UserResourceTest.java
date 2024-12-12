@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.taskmanagement.TestUtils;
 import com.example.taskmanagement.user.domain.UserEntity;
 import com.example.taskmanagement.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserEntityResourceTest {
+class UserResourceTest {
 
   private static final String USERS = "/users";
   private static final String FIRST_NAME = "John";
@@ -105,11 +106,6 @@ class UserEntityResourceTest {
   }
 
   private static UserEntity createTestUser() {
-    UserEntity user = new UserEntity();
-    user.setFirstName(FIRST_NAME);
-    user.setLastName(LAST_NAME);
-    user.setPhoneNumber(PHONE_NUMBER);
-    user.setEmail(EMAIL);
-    return user;
+    return TestUtils.createTestUser(FIRST_NAME, LAST_NAME, PHONE_NUMBER, EMAIL);
   }
 }

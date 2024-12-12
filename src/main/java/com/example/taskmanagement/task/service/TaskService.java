@@ -4,6 +4,8 @@ import com.example.taskmanagement.task.domain.TaskEntity;
 import com.example.taskmanagement.task.dto.TaskDto;
 import com.example.taskmanagement.task.mapper.TaskMapper;
 import com.example.taskmanagement.task.repository.TaskRepository;
+import com.example.taskmanagement.user.domain.UserEntity;
+import com.example.taskmanagement.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,15 @@ import org.springframework.stereotype.Service;
 public class TaskService {
 
   private final TaskRepository taskRepository;
+  private final UserRepository userRepository;
   private final TaskMapper taskMapper;
 
   public List<TaskDto> getAllTasks() {
     return taskRepository.findAllWithAssignee().stream().map(taskMapper::toDto).toList();
   }
 
-  public TaskDto createUser(TaskEntity taskEntity) {
+  public TaskDto createUser(TaskDto taskDto) {
+    TaskEntity taskEntity = taskMapper.toEntity(taskDto);
     return taskMapper.toDto(taskRepository.save(taskEntity));
   }
 
@@ -28,5 +32,25 @@ public class TaskService {
         .findById(id)
         .map(taskMapper::toDto)
         .orElseThrow(() -> new RuntimeException("Task not found"));
+  }
+
+  public void assignTask(Long taskId, Long userId) {
+    UserEntity userEntity =
+        userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    TaskEntity task =
+        taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+    task.setAssignee(userEntity);
+    taskRepository.save(task);
+  }
+
+  public void unassignUser(Long taskId) {
+    TaskEntity task =
+        taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+    task.setAssignee(null);
+    taskRepository.save(task);
+  }
+
+  public void deleteTaskById(Long taskId) {
+    taskRepository.deleteById(taskId);
   }
 }
