@@ -5,6 +5,7 @@ import com.example.taskmanagement.user.dto.UserDto;
 import com.example.taskmanagement.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class UserResource {
 
   private final UserService userService;
 
   @GetMapping("/users")
   public List<UserDto> getUsers() {
+    log.info("Getting all users v1");
     return userService.getAllUsers();
   }
 
