@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: tm-backend-ecr
   ECS_SERVICE: ecs-service
   ECS_CLUSTER: tm-backend-ecs-cluster
-  ECS_TASK_DEFINITION: .github/workflows/ecs-task-definition-revision1.json
+  ECS_TASK_DEFINITION: .github/workflows/ecs-task-definition.json
 
   CONTAINER_NAME: tm-backend
 
