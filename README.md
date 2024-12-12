@@ -23,6 +23,7 @@ The Task Management project is designed to manage tasks. It provides RESTful API
 
 - **GitHub Actions**: Used for continuous integration.
     - **ci.yml**: Workflow configuration for building and testing the project.
+    - **aws.yml**: Workflow configuration for deploying the project to AWS.
 
 ## How to Run
 
