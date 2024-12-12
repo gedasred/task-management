@@ -16,7 +16,7 @@ public class TaskService {
   private final TaskMapper taskMapper;
 
   public List<TaskDto> getAllTasks() {
-    return taskRepository.findAll().stream().map(taskMapper::toDto).toList();
+    return taskRepository.findAllWithAssignee().stream().map(taskMapper::toDto).toList();
   }
 
   public TaskDto createUser(TaskEntity taskEntity) {

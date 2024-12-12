@@ -3,6 +3,7 @@ package com.example.taskmanagement.user.rest;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -66,12 +67,35 @@ class UserEntityResourceTest {
     Long id = userRepository.findAll().get(0).getId();
 
     mockMvc
-        .perform(get(USERS + "/" + id).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+        .perform(
+            get("%s/%d".formatted(USERS, id)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("firstName", is(FIRST_NAME)))
         .andExpect(jsonPath("lastName", is(LAST_NAME)))
         .andExpect(jsonPath("phoneNumber", is(PHONE_NUMBER)))
         .andExpect(jsonPath("email", is(EMAIL)));
+  }
+
+  @Test
+  @WithMockUser(username = "test_user")
+  void testDeleteUserById() throws Exception {
+    String userJson = new ObjectMapper().writeValueAsString(createTestUser());
+
+    createUserPostCall(userJson);
+
+    Long id = userRepository.findAll().get(0).getId();
+
+    mockMvc
+        .perform(
+            delete("%s/%d".formatted(USERS, id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(get(USERS).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(0)));
   }
 
   private void createUserPostCall(String userJson) throws Exception {
