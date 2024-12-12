@@ -23,7 +23,7 @@ public class UserResource {
 
   @GetMapping("/users")
   public List<UserDto> getUsers() {
-    log.info("Getting all users v1");
+    log.info("Getting all users v2");
     return userService.getAllUsers();
   }
 
