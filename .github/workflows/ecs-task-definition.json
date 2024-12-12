@@ -14,10 +14,33 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "spring.profiles.active",
+                    "value": "prod"
+                }
+            ],
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "POSTGRES_USER",
+                    "valueFrom": "arn:aws:ssm:eu-north-1:340752827921:parameter/postgresuser"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "valueFrom": "arn:aws:ssm:eu-north-1:340752827921:parameter/postgrespassword"
+                },
+                {
+                    "name": "SECURITY_USER",
+                    "valueFrom": "arn:aws:ssm:eu-north-1:340752827921:parameter/securityuser"
+                },
+                {
+                    "name": "SECURITY_PASSWORD",
+                    "valueFrom": "arn:aws:ssm:eu-north-1:340752827921:parameter/securitypassword"
+                }
+            ],
             "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
