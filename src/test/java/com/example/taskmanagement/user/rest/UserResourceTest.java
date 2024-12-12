@@ -10,10 +10,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.taskmanagement.TestUtils;
+import com.example.taskmanagement.task.domain.TaskEntity;
+import com.example.taskmanagement.task.repository.TaskRepository;
 import com.example.taskmanagement.user.domain.UserEntity;
 import com.example.taskmanagement.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,9 +38,11 @@ class UserResourceTest {
   @Autowired private MockMvc mockMvc;
 
   @Autowired private UserRepository userRepository;
+  @Autowired private TaskRepository taskRepository;
 
   @AfterEach
   void cleanUp() {
+    taskRepository.deleteAll();
     userRepository.deleteAll();
   }
 
@@ -79,6 +84,17 @@ class UserResourceTest {
 
   @Test
   @WithMockUser(username = "test_user")
+  void testGetUserById_notFoundException() throws Exception {
+    mockMvc
+        .perform(
+            get("%s/%d".formatted(USERS, 1)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("status", is(404)))
+        .andExpect(jsonPath("message", is("User not found")));
+  }
+
+  @Test
+  @WithMockUser(username = "test_user")
   void testDeleteUserById() throws Exception {
     String userJson = new ObjectMapper().writeValueAsString(createTestUser());
 
@@ -93,10 +109,27 @@ class UserResourceTest {
                 .with(csrf()))
         .andExpect(status().isOk());
 
+    Assertions.assertTrue(userRepository.findAll().isEmpty());
+  }
+
+  @Test
+  @WithMockUser(username = "test_user")
+  void testDeleteUserById_userHasTaskException() throws Exception {
+    String userJson = new ObjectMapper().writeValueAsString(createTestUser());
+    createUserPostCall(userJson);
+
+    UserEntity user = userRepository.findAll().get(0);
+    TaskEntity task = TestUtils.createTestTask(user);
+    taskRepository.save(task);
+
     mockMvc
-        .perform(get(USERS).contentType(MediaType.APPLICATION_JSON).with(csrf()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(0)));
+        .perform(
+            delete("%s/%d".formatted(USERS, user.getId()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("status", is(400)))
+        .andExpect(jsonPath("message", is("User can not be deleted. Has tasks assigned.")));
   }
 
   private void createUserPostCall(String userJson) throws Exception {

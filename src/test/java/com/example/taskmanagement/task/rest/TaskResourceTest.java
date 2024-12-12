@@ -79,6 +79,17 @@ class TaskResourceTest {
 
   @Test
   @WithMockUser(username = "test_user")
+  void testGetUserById_notFoundException() throws Exception {
+    mockMvc
+        .perform(
+            get("%s/%d".formatted(TASKS, 1)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("status", is(404)))
+        .andExpect(jsonPath("message", is("Task not found")));
+  }
+
+  @Test
+  @WithMockUser(username = "test_user")
   void testDeleteTaskById() throws Exception {
     String taskJson = new ObjectMapper().writeValueAsString(createTestTask());
     createTaskPostCall(taskJson);

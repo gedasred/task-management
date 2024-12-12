@@ -11,4 +11,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
   @EntityGraph(attributePaths = "assignee")
   @Query("SELECT t FROM TaskEntity t")
   List<TaskEntity> findAllWithAssignee();
+
+  boolean existsByAssigneeId(Long assigneeId);
 }
