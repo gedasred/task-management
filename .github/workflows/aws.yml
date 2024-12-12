@@ -5,10 +5,7 @@ on:
     workflows: ["CI"]
     types:
       - completed
-  push:
-    branches: [ "main" ]
-    paths-ignore:
-      - 'README.md'
+    branches: ["main"]
 
 env:
   AWS_REGION: eu-north-1
@@ -27,7 +24,6 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
-    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.default_branch == 'main' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
 
     steps:
     - name: Checkout
