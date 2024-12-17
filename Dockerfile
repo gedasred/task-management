@@ -1,4 +1,3 @@
-# Use the openjdk as the base image
 FROM eclipse-temurin:17-jre-alpine
 
 # Set the working directory
