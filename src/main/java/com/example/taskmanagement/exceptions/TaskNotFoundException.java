@@ -1,7 +1,9 @@
 package com.example.taskmanagement.exceptions;
 
-public class TaskNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class TaskNotFoundException extends ParentException {
   public TaskNotFoundException(String message) {
-    super(message);
+    super(message, HttpStatus.NOT_FOUND);
   }
 }

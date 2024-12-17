@@ -9,4 +9,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
   @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.tasks")
   List<UserEntity> findAllWithTasks();
+
 }

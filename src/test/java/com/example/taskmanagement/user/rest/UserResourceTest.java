@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -89,7 +90,7 @@ class UserResourceTest {
         .perform(
             get("%s/%d".formatted(USERS, 1)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
         .andExpect(status().isNotFound())
-        .andExpect(jsonPath("status", is(404)))
+        .andExpect(jsonPath("status", is(HttpStatus.NOT_FOUND.name())))
         .andExpect(jsonPath("message", is("User not found")));
   }
 
@@ -128,7 +129,7 @@ class UserResourceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf()))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("status", is(400)))
+        .andExpect(jsonPath("status", is(HttpStatus.BAD_REQUEST.name())))
         .andExpect(jsonPath("message", is("User can not be deleted. Has tasks assigned.")));
   }
 
