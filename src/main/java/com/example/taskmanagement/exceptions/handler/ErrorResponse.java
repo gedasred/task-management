@@ -1,3 +1,5 @@
 package com.example.taskmanagement.exceptions.handler;
 
-public record ErrorResponse(int status, String message) {}
+import org.springframework.http.HttpStatus;
+
+public record ErrorResponse(HttpStatus status, String message) {}

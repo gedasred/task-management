@@ -1,7 +1,9 @@
 package com.example.taskmanagement.exceptions;
 
-public class UserHasTasksException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UserHasTasksException extends ParentException {
   public UserHasTasksException(String message) {
-    super(message);
+    super(message, HttpStatus.BAD_REQUEST);
   }
 }
